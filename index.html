@@ -70,11 +70,11 @@
                 min-height: 60px;
                 object-fit: contain;
             }
-            /* FIXED: Removed the problematic nav img rule that was overriding Tailwind */
-            /* nav img {
-                height: 28px !important;
-                max-height: 32px !important;
-            } */
+            /* FIXED: Ensure no gaps */
+            .hero-section {
+                margin-top: -80px !important;
+                padding-top: 80px !important;
+            }
         }
 
         /* Mobile viewport fix */
@@ -306,17 +306,42 @@
         .animate-fade-in {
             animation: fadeIn 0.8s ease forwards;
         }
+        
+        /* FIXED: Critical fix to remove gap between navbar and hero */
+        .hero-section {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            position: relative;
+        }
+        
+        /* FIXED: Ensure navbar has no bottom border or shadow that creates gap */
+        nav.navbar-fixed {
+            border-bottom: none !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        }
+        
+        /* FIXED: Hero image should touch navbar */
+        .hero-slides,
+        .hero-slide {
+            top: 0 !important;
+        }
+        
+        /* FIXED: Remove any default margins/paddings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body class="font-sans text-gray-700 bg-gray-50" style="height: auto; min-height: 100%;">
 
     <!-- Navigation -->
-    <nav class="bg-white shadow-md fixed w-full z-50 transition-all duration-300" id="navbar" style="top: 0; left: 0;">
+    <nav class="navbar-fixed bg-white shadow-md fixed w-full z-50 transition-all duration-300" id="navbar" style="top: 0; left: 0;">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center gap-3">
                     <a href="#" class="flex items-center gap-3 logo">
-                        <!-- FIXED: Logo now uses Tailwind classes properly -->
                         <img src="assets/goodcare-logo.png" alt="Good Care International Logo" class="h-16 sm:h-20 object-contain">
                     </a>
                 </div>
@@ -349,12 +374,12 @@
             <a href="#packages" class="nav-link block py-2">Packages</a>
             <a href="#blog" class="nav-link block py-2">Blog</a>
             <a href="#services" class="nav-link block py-2">Services</a>
-            <a href="#contact" class="block px-6 py-2.5 bg-brand-blue text-white font-medium rounded-full hover:bg-blue-700 transition shadow-lg mt-4">Book Now</a>
+                    <a href="#contact" class="block px-6 py-2.5 bg-brand-blue text-white font-medium rounded-full hover:bg-blue-700 transition shadow-lg mt-4">Book Now</a>
         </div>
     </div>
 
-    <!-- Hero (background slideshow) - FIXED: Removed pt-20 padding -->
-    <section class="relative text-white overflow-hidden hero-bg" style="min-height: 620px; margin-top: 0; padding-top: 0;">
+    <!-- Hero (background slideshow) - FIXED: Removed all top padding/margin -->
+    <section class="hero-section relative text-white overflow-hidden hero-bg" style="min-height: 620px;">
         <div class="absolute inset-0">
             <div class="hero-slides" aria-hidden="true">
                 <div class="hero-slide" style="background-image: url('assets/background 3.jpg');" data-title="Fly Beyond Borders" data-sub="Exclusive international packages crafted for your comfort."></div>
@@ -1243,7 +1268,6 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 <div>
                     <a href="#" class="flex items-center gap-3 mb-6">
-                        <!-- FIXED: Footer logo also uses Tailwind classes properly -->
                         <img src="assets/goodcare-logo.jpg" alt="Good Care International Logo" class="h-14 md:h-16 object-contain">
                     </a>
                     <p class="text-gray-400 text-sm leading-relaxed mb-6">
@@ -1632,5 +1656,4 @@
         })();
     </script>
 </body>
-
 </html>
