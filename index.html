@@ -57,19 +57,22 @@
             left: 0;
             right: 0;
             z-index: 9999;
+            height: 80px; /* Fixed navbar height */
         }
         
-        /* Hero section uses dynamic viewport units */
+        /* HERO SECTION FIXES - COMPLETE REWORK */
         .hero-section {
-            width: 100vw;
+            width: 100%;
             margin-top: 0 !important;
             padding-top: 0 !important;
             position: relative;
             /* Using dvh (dynamic viewport height) for mobile compatibility */
-            min-height: 100dvh;
-            /* Fallback for older browsers */
             min-height: 100vh;
+            min-height: 100dvh;
             min-height: -webkit-fill-available;
+            overflow: hidden;
+            /* Desktop starts below navbar */
+            padding-top: 80px;
         }
         
         /* Ensure hero content is properly positioned */
@@ -88,8 +91,94 @@
             width: 100%;
             height: 100%;
             background-size: cover;
-            background-position: center;
+            background-position: center center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #222; /* fallback color for slow image loads */
+        }
+        
+        /* Improved overlay for better text contrast */
+        .hero-overlay {
+            background: linear-gradient(to bottom, 
+                rgba(0, 0, 0, 0.85) 0%,
+                rgba(0, 0, 0, 0.65) 50%,
+                rgba(0, 0, 0, 0.45) 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Hero text container - FIXED POSITIONING */
+        .hero-content-container {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 1rem;
+            /* Ensure content is properly centered and doesn't touch edges */
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Improved text visibility */
+        .hero-caption-title {
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .hero-caption-sub {
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 400;
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+        
+        /* Hero buttons with better contrast */
+        .hero-button-primary {
+            background: linear-gradient(135deg, #FF7F27 0%, #FF5E1F 100%);
+            color: white;
+            font-weight: 600;
+            padding: 0.875rem 2rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 20px rgba(255, 127, 39, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-block;
+        }
+        
+        .hero-button-primary:hover {
+            background: linear-gradient(135deg, #FF5E1F 0%, #FF4500 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 127, 39, 0.6);
+        }
+        
+        .hero-button-secondary {
+            background: transparent;
+            color: white;
+            font-weight: 600;
+            padding: 0.875rem 2rem;
+            border-radius: 9999px;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .hero-button-secondary:hover {
+            background: white;
+            color: #0044CC;
+            transform: translateY(-2px);
         }
         
         /* Mobile specific fixes */
@@ -100,28 +189,96 @@
                 height: -webkit-fill-available;
             }
             
-            /* Force hero to fill screen below navbar */
+            /* Adjust hero for mobile */
             .hero-section {
                 min-height: calc(100dvh - 80px);
-                margin-top: 80px !important; /* Navbar height */
+                padding-top: 0 !important;
+                margin-top: 80px !important; /* Push below fixed navbar */
             }
             
-            /* Adjust hero content positioning */
-            .hero-section .container {
-                padding-top: 40px;
-                padding-bottom: 40px;
-            }
-            
-            /* Ensure images cover properly */
+            /* Adjust hero background for mobile */
             .hero-slide {
-                background-attachment: scroll;
+                background-attachment: scroll !important;
+                background-position: center center !important;
             }
             
-            /* Remove any default margins */
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
+            /* Mobile text adjustments */
+            .hero-caption-title {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-caption-sub {
+                font-size: 1.125rem;
+                margin-bottom: 2rem;
+                padding: 0 1rem;
+            }
+            
+            /* Mobile button adjustments */
+            .hero-button-primary,
+            .hero-button-secondary {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+                width: 90%;
+                max-width: 280px;
+                margin: 0.5rem auto;
+                display: block;
+            }
+            
+            /* Center content on mobile */
+            .hero-content-container {
+                padding: 1.5rem 1rem;
+                justify-content: center;
+            }
+            
+            /* Improve overlay for mobile */
+            .hero-overlay {
+                background: linear-gradient(to bottom, 
+                    rgba(0, 0, 0, 0.9) 0%,
+                    rgba(0, 0, 0, 0.7) 50%,
+                    rgba(0, 0, 0, 0.5) 100%);
+            }
+        }
+        
+        /* Desktop adjustments */
+        @media (min-width: 769px) {
+            .hero-section {
+                padding-top: 80px; /* Navbar height */
+                margin-top: 0 !important;
+            }
+            
+            .hero-caption-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-caption-sub {
+                font-size: 1.5rem;
+            }
+            
+            .hero-button-primary,
+            .hero-button-secondary {
+                display: inline-block;
+                margin: 0 0.5rem;
+                width: auto;
+            }
+            
+            .hero-content-container {
+                padding: 3rem 2rem;
+            }
+        }
+        
+        /* Large desktop adjustments */
+        @media (min-width: 1024px) {
+            .hero-caption-title {
+                font-size: 4rem;
+            }
+            
+            .hero-caption-sub {
+                font-size: 1.75rem;
+            }
+            
+            .hero-content-container {
+                padding: 4rem 2rem;
             }
         }
         
@@ -131,16 +288,6 @@
             padding-top: 0 !important;
         }
         
-        /* Hero background using local image */
-        .hero-bg {
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        .hero-overlay {
-            background: linear-gradient(0deg, rgba(10, 10, 10, 0.55), rgba(10, 10, 10, 0.35));
-        }
-
         /* Navbar link animation */
         .nav-link {
             position: relative;
@@ -177,7 +324,7 @@
 
         /* Hero slider styles */
         .hero-slides { position: absolute; inset: 0; height: 100%; }
-        .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0; transition: opacity .9s ease, transform .9s ease; transform: scale(1); }
+        .hero-slide { opacity: 0; transition: opacity .9s ease, transform .9s ease; transform: scale(1); }
         .hero-slide.active { opacity: 1; transform: scale(1.02); }
 
         /* Pinterest embed visit section styles */
@@ -221,9 +368,7 @@
         .hero-dots button { width: 12px; height: 12px; border-radius: 9999px; background: rgba(255,255,255,0.28); border: none; transition: transform .18s ease, background .18s ease; }
         .hero-dots button.active { transform: scale(1.25); background: rgba(255,255,255,0.95); }
 
-        /* Caption styles (centered, minimal obstruction) */
-        .hero-caption-title { text-shadow: 0 8px 24px rgba(10,10,10,0.6); }
-        .hero-caption-sub { text-shadow: 0 6px 18px rgba(10,10,10,0.45); color: rgba(235,245,255,0.95); }
+        /* Caption transition */
         .hero-caption { transition: opacity .35s ease, transform .35s ease; }
         .hero-caption.anim-out { opacity: 0; transform: translateY(8px); }
 
@@ -338,18 +483,9 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease forwards;
-        }
         
         /* Additional mobile fixes */
-        @media (max-width: 600px) {
-            /* Ensure hero fills space below taller mobile navbar */
-            .hero-section {
-                min-height: calc(100dvh - 80px) !important;
-                margin-top: 80px !important;
-            }
-            
+        @media (max-width: 768px) {
             /* Remove any top margin/padding on hero and first section */
             .hero-section,
             section:first-of-type {
@@ -357,17 +493,14 @@
                 padding-top: 0 !important;
             }
             
-            /* Force hero image to cover and fill */
-            .hero-slide {
-                width: 100%;
-                height: 100%;
-                object-fit: cover !important;
-                display: block;
-            }
-            
             /* Adjust body padding for mobile */
             body {
                 padding-top: 0;
+            }
+            
+            /* Ensure hero dots are visible */
+            .hero-dots {
+                bottom: 30px !important;
             }
         }
         
@@ -377,17 +510,47 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
         }
         
-        /* Hero image should touch navbar */
-        .hero-slides,
-        .hero-slide {
-            top: 0 !important;
-        }
-        
         /* Remove any default margins/paddings */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+        
+        /* Tablet adjustments */
+        @media (min-width: 640px) and (max-width: 768px) {
+            .hero-caption-title {
+                font-size: 3rem;
+            }
+            
+            .hero-caption-sub {
+                font-size: 1.25rem;
+            }
+            
+            .hero-button-primary,
+            .hero-button-secondary {
+                width: auto;
+                min-width: 200px;
+            }
+        }
+        
+        /* Ensure hero dots are above content */
+        .hero-dots {
+            z-index: 20;
+        }
+        
+        /* Scroll indicator positioning */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+        
+        /* Prevent content shift when navbar becomes fixed */
+        body {
+            padding-top: 0;
         }
     </style>
     <script>
@@ -450,12 +613,12 @@
             <a href="#packages" class="nav-link block py-2">Packages</a>
             <a href="#blog" class="nav-link block py-2">Blog</a>
             <a href="#services" class="nav-link block py-2">Services</a>
-                    <a href="#contact" class="block px-6 py-2.5 bg-brand-blue text-white font-medium rounded-full hover:bg-blue-700 transition shadow-lg mt-4">Book Now</a>
+            <a href="#contact" class="block px-6 py-2.5 bg-brand-blue text-white font-medium rounded-full hover:bg-blue-700 transition shadow-lg mt-4">Book Now</a>
         </div>
     </div>
 
-    <!-- Hero (background slideshow) - FIXED: Using dvh for mobile compatibility -->
-    <section class="hero-section svg-animated-border relative text-white overflow-hidden hero-bg">
+    <!-- Hero (background slideshow) - FIXED FOR ALL SCREENS -->
+    <section class="hero-section svg-animated-border relative text-white overflow-hidden">
         <svg class="svg-border" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;z-index:10;pointer-events:none;">
             <defs>
                 <linearGradient id="border-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -469,20 +632,29 @@
         </svg>
         <div class="absolute inset-0">
             <div class="hero-slides" aria-hidden="true">
-                <div class="hero-slide" style="background-image: url('assets/background 3.jpg');" data-title="Fly Beyond Borders" data-sub="Exclusive international packages crafted for your comfort."></div>
-                <div class="hero-slide" style="background-image: url('assets/background 1.jpeg');" data-title="Discover Hidden Gems" data-sub="Tailored domestic getaways for every mood and budget."></div>
-                <div class="hero-slide" style="background-image: url('assets/background 2.jpeg');" data-title="Adventure Awaits" data-sub="Curated experiences and guided tours around the world."></div>
+                <div class="hero-slide" style="background-image: url('assets/background 1.jpeg');" data-title="Fly Beyond Borders" data-sub="Exclusive international packages crafted for your comfort."></div>
+                <div class="hero-slide" style="background-image: url('assets/background 2.jpeg');" data-title="Discover Hidden Gems" data-sub="Tailored domestic getaways for every mood and budget."></div>
+                <div class="hero-slide" style="background-image: url('assets/background 3.jpg');" data-title="Adventure Awaits" data-sub="Curated experiences and guided tours around the world."></div>
             </div>
-            <div class="absolute inset-0 hero-overlay"></div>
+            <div class="hero-overlay"></div>
         </div>
 
-        <div class="container mx-auto px-4 py-28 text-center relative z-10" data-aos="fade-up">
+        <div class="hero-content-container" data-aos="fade-up">
             <div class="hero-caption">
-                <h1 class="hero-caption-title text-4xl md:text-6xl font-bold mb-4 leading-tight"></h1>
-                <p class="hero-caption-sub text-lg md:text-xl mb-8 max-w-2xl mx-auto text-blue-100"></p>
-                <div class="flex items-center justify-center gap-4 mb-10">
-                    <a href="#contact" class="px-8 py-3 bg-brand-orange text-white font-bold rounded-full hover:bg-orange-600 shadow">Plan My Trip</a>
-                    <a href="#destinations" class="px-8 py-3 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-brand-blue transition">Explore Destinations</a>
+                <h1 class="hero-caption-title text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6">Fly Beyond Borders</h1>
+                <p class="hero-caption-sub text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 max-w-3xl mx-auto px-4">Exclusive international packages crafted for your comfort and unforgettable experiences.</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mb-10">
+                    <a href="#contact" class="hero-button-primary">
+                        <i class="fas fa-calendar-alt mr-2"></i> Plan My Trip
+                    </a>
+                    <a href="#destinations" class="hero-button-secondary">
+                        <i class="fas fa-map-marked-alt mr-2"></i> Explore Destinations
+                    </a>
+                </div>
+                <div class="text-sm md:text-base text-white/90">
+                    <i class="fas fa-shield-alt mr-2"></i> Safe & Secure Bookings • 
+                    <i class="fas fa-headset ml-4 mr-2"></i> 24/7 Support • 
+                    <i class="fas fa-award ml-4 mr-2"></i> Best Price Guarantee
                 </div>
             </div>
         </div>
@@ -491,6 +663,13 @@
             <button class="active" aria-label="Slide 1"></button>
             <button aria-label="Slide 2"></button>
             <button aria-label="Slide 3"></button>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator hidden md:block">
+            <div class="animate-bounce">
+                <i class="fas fa-chevron-down text-white text-2xl"></i>
+            </div>
         </div>
     </section>
 
