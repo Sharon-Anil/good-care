@@ -13,212 +13,124 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-                /* SVG animated border for hero section */
-                .hero-section.svg-animated-border {
-                    position: relative;
-                    border-radius: 16px;
-                    overflow: visible;
-                }
-                .hero-section.svg-animated-border .svg-border {
-                    position: absolute;
-                    top: 0; left: 0; width: 100%; height: 100%;
-                    z-index: 10;
-                    pointer-events: none;
-                }
-                .hero-section.svg-animated-border .svg-border .line {
-                    stroke-dasharray: 1200;
-                    stroke-width: 4px;
-                    fill: transparent;
-                    stroke: url(#border-gradient);
-                    filter: drop-shadow(0 0 8px #4eff0d) drop-shadow(0 0 16px #00e0ff88);
-                    animation: svgAnimation 3.5s cubic-bezier(.4,1,.6,1) infinite;
-                }
-                @keyframes svgAnimation {
-                    0% { stroke-dashoffset: 0; }
-                    100% { stroke-dashoffset: 1200; }
-                }
-        @media (max-width: 600px) {
-            /* Ensure hero fills space below taller mobile navbar */
-            .hero {
-                min-height: 350px !important;
-            }
-            /* Remove any top margin/padding on hero and first section */
-            .hero,
-            section:first-of-type {
-                margin-top: 0 !important;
-                padding-top: 0 !important;
-            }
-            /* Force hero image to cover and fill */
-            .hero img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover !important;
-                display: block;
-            }
+        /* SVG animated border for hero section */
+        .hero-section.svg-animated-border {
+            position: relative;
+            border-radius: 16px;
+            overflow: visible;
         }
-    </style>
-<!DOCTYPE html>
-<html lang="en" style="height: auto; min-height: 100%;">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <title>Good Care International Tours & Travels</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            blue: '#0044CC',
-                            orange: '#FF7F27',
-                            dark: '#1A1A1A',
-                            light: '#F8F9FA'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    }
-                }
-            }
+        .hero-section.svg-animated-border .svg-border {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+            pointer-events: none;
         }
-    </script>
-
-    <style>
+        .hero-section.svg-animated-border .svg-border .line {
+            stroke-dasharray: 1200;
+            stroke-width: 4px;
+            fill: transparent;
+            stroke: url(#border-gradient);
+            filter: drop-shadow(0 0 8px #4eff0d) drop-shadow(0 0 16px #00e0ff88);
+            animation: svgAnimation 3.5s cubic-bezier(.4,1,.6,1) infinite;
+        }
+        @keyframes svgAnimation {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 1200; }
+        }
+        
+        /* MOBILE FIX: Critical viewport fixes */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
-            min-height: 100%;
-            height: auto;
-            scroll-behavior: smooth;
+            height: 100%;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
-
-        /* FIX: Remove navbar shadow and border */
+        
+        /* Fix for mobile navbar gap */
         #navbar {
             box-shadow: none !important;
             border-bottom: 0 !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
         }
-
-        /* FIX: Remove spacing between navbar and logo */
-        .logo, .logo img {
+        
+        /* Hero section uses dynamic viewport units */
+        .hero-section {
+            width: 100vw;
             margin-top: 0 !important;
             padding-top: 0 !important;
-            display: block;
+            position: relative;
+            /* Using dvh (dynamic viewport height) for mobile compatibility */
+            min-height: 100dvh;
+            /* Fallback for older browsers */
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
         }
-
-        /* FIX: Remove top spacing on the first section */
+        
+        /* Ensure hero content is properly positioned */
+        .hero-slides {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* Mobile specific fixes */
+        @media (max-width: 768px) {
+            /* Apply dynamic viewport units to body */
+            body {
+                height: 100dvh;
+                height: -webkit-fill-available;
+            }
+            
+            /* Force hero to fill screen below navbar */
+            .hero-section {
+                min-height: calc(100dvh - 80px);
+                margin-top: 80px !important; /* Navbar height */
+            }
+            
+            /* Adjust hero content positioning */
+            .hero-section .container {
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+            
+            /* Ensure images cover properly */
+            .hero-slide {
+                background-attachment: scroll;
+            }
+            
+            /* Remove any default margins */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+        }
+        
+        /* Ensure no white gaps */
         section:first-of-type {
             margin-top: 0 !important;
             padding-top: 0 !important;
         }
-
-        /* FIX: Hero section full-bleed, no container, no margin/padding */
-        .hero {
-            width: 100vw !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 60vh;
-            position: relative;
-            text-align: center;
-        }
-
-        /* Vertically center hero text content */
-        .hero-content, .hero .content, .hero .hero-text {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            min-height: 40vh;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Remove any container/max-width wrappers inside hero (if present) */
-        .hero .container, .hero .mx-auto, .hero [class*="container"] {
-            width: 100vw !important;
-            max-width: 100vw !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* FIX: Force hero image to fill container and be block-level */
-        .hero img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        @media (max-width: 600px) {
-            html, body {
-                /* FIXED: Adjust padding for mobile */
-                padding-top: 64px;
-            }
-            .navbar-button, .navbar button, .navbar .btn {
-                background-color: #007bff !important;
-                color: #fff !important;
-                border: none !important;
-            }
-            .hero-bg {
-                background-size: cover !important;
-                background-position: center center !important;
-                background-repeat: no-repeat !important;
-                min-height: 500px !important;
-            }
-            .hero-overlay {
-                background: linear-gradient(0deg, rgba(10, 10, 10, 0.45), rgba(10, 10, 10, 0.25)) !important;
-            }
-            .logo {
-                max-width: 200px !important;
-                height: auto !important;
-            }
-            .logo img {
-                max-width: 200px !important;
-                height: auto !important;
-                min-height: 60px;
-                object-fit: contain;
-            }
-            /* FIXED: Ensure no gaps */
-            .hero-section {
-                margin-top: -80px !important;
-                padding-top: 80px !important;
-            }
-        }
-
-        /* Mobile viewport fix */
-        @media (max-width: 768px) {
-            html, body {
-                width: 100%;
-                overflow-x: hidden;
-                position: relative;
-            }
-            
-            .container {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            
-            .hero-slide {
-                background-size: cover !important;
-                background-position: center center !important;
-            }
-        }
-
+        
         /* Hero background using local image */
         .hero-bg {
             background-size: cover;
@@ -430,32 +342,73 @@
             animation: fadeIn 0.8s ease forwards;
         }
         
-        /* FIXED: Critical fix to remove gap between navbar and hero */
-        .hero-section {
-            margin-top: 0 !important;
-            padding-top: 0 !important;
-            position: relative;
+        /* Additional mobile fixes */
+        @media (max-width: 600px) {
+            /* Ensure hero fills space below taller mobile navbar */
+            .hero-section {
+                min-height: calc(100dvh - 80px) !important;
+                margin-top: 80px !important;
+            }
+            
+            /* Remove any top margin/padding on hero and first section */
+            .hero-section,
+            section:first-of-type {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            /* Force hero image to cover and fill */
+            .hero-slide {
+                width: 100%;
+                height: 100%;
+                object-fit: cover !important;
+                display: block;
+            }
+            
+            /* Adjust body padding for mobile */
+            body {
+                padding-top: 0;
+            }
         }
         
-        /* FIXED: Ensure navbar has no bottom border or shadow that creates gap */
+        /* Ensure navbar has no bottom border or shadow that creates gap */
         nav.navbar-fixed {
             border-bottom: none !important;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
         }
         
-        /* FIXED: Hero image should touch navbar */
+        /* Hero image should touch navbar */
         .hero-slides,
         .hero-slide {
             top: 0 !important;
         }
         
-        /* FIXED: Remove any default margins/paddings */
+        /* Remove any default margins/paddings */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
     </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0044CC',
+                            orange: '#FF7F27',
+                            dark: '#1A1A1A',
+                            light: '#F8F9FA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="font-sans text-gray-700 bg-gray-50" style="height: auto; min-height: 100%;">
 
@@ -501,8 +454,8 @@
         </div>
     </div>
 
-    <!-- Hero (background slideshow) - FIXED: Removed all top padding/margin -->
-    <section class="hero-section svg-animated-border relative text-white overflow-hidden hero-bg" style="min-height: 620px;">
+    <!-- Hero (background slideshow) - FIXED: Using dvh for mobile compatibility -->
+    <section class="hero-section svg-animated-border relative text-white overflow-hidden hero-bg">
         <svg class="svg-border" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;z-index:10;pointer-events:none;">
             <defs>
                 <linearGradient id="border-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1396,6 +1349,47 @@
         </div>
     </section>
 
+    <!-- Animated Visit Our Website Section -->
+    <section id="visit-website-animated" class="py-20" style="background: #e0e7ff; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.08); border-radius: 0.75rem;">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-brand-orange font-bold tracking-wider uppercase text-sm">How to Find Us</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mt-2">Visit Our Website</h2>
+                <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded-full"></div>
+                <p class="text-gray-600 mt-4 max-w-xl mx-auto">See how easy it is to find and book with Good Care International online!</p>
+            </div>
+            <div class="flex flex-col items-center justify-center gap-8">
+                <div class="w-full max-w-xl bg-white/70 rounded-xl shadow-lg p-6 relative overflow-hidden">
+                    <div id="visit-steps">
+                        <div class="visit-step step-1 flex items-center gap-3 mb-6">
+                            <i class="fas fa-search text-brand-blue text-2xl animate-bounce"></i>
+                            <span class="text-lg">Open Google and search <span class="font-semibold">goodcareinternational.info</span></span>
+                        </div>
+                        <div class="visit-step step-2 flex items-center gap-3 mb-6">
+                            <i class="fas fa-mouse-pointer text-brand-orange text-2xl animate-pulse"></i>
+                            <span class="text-lg">Click the top result: <span class="font-semibold text-brand-blue">Good Care International</span></span>
+                        </div>
+                        <div class="visit-step step-3 flex items-center gap-3 mb-6">
+                            <i class="fas fa-globe text-green-600 text-2xl animate-spin-slow"></i>
+                            <span class="text-lg">Website loads: <span class="font-semibold">goodcareinternational.info</span></span>
+                        </div>
+                        <div class="visit-step step-4 flex items-center gap-3 mb-6">
+                            <span class="text-lg font-semibold text-brand-blue">Explore our services:</span>
+                            <span class="inline-flex space-x-4 ml-2">
+                                <i class="fas fa-plane text-xl text-blue-400 animate-plane-move"></i>
+                                <i class="fas fa-car text-xl text-gray-600 animate-car-move"></i>
+                                <i class="fas fa-ship text-xl text-blue-700 animate-boat-move"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="visit-cta-wrap" class="text-center mt-8">
+                        <a href="https://goodcareinternational.info" target="_blank" rel="noopener noreferrer" class="inline-block bg-brand-blue text-white rounded-full px-8 py-3 font-bold text-lg shadow hover:bg-blue-700 transition">Visit Our Website</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-gray-900 text-white pt-16 pb-8">
         <div class="container mx-auto px-4">
@@ -1489,48 +1483,6 @@
     <a href="https://wa.me/919645512246?text=Hi%20Good%20Care%20I%20would%20like%20to%20book%20a%20trip" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp booking & contact +91 96455 12246" title="WhatsApp Booking & Contact">
         <span class="wa-icon"><i class="fab fa-whatsapp"></i></span>
     </a>
-
-
-    <!-- Animated Visit Our Website Section -->
-    <section id="visit-website-animated" class="py-20" style="background: #e0e7ff; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.08); border-radius: 0.75rem;">
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-12">
-                <span class="text-brand-orange font-bold tracking-wider uppercase text-sm">How to Find Us</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mt-2">Visit Our Website</h2>
-                <div class="w-20 h-1 bg-brand-blue mx-auto mt-4 rounded-full"></div>
-                <p class="text-gray-600 mt-4 max-w-xl mx-auto">See how easy it is to find and book with Good Care International online!</p>
-            </div>
-            <div class="flex flex-col items-center justify-center gap-8">
-                <div class="w-full max-w-xl bg-white/70 rounded-xl shadow-lg p-6 relative overflow-hidden">
-                    <div id="visit-steps">
-                        <div class="visit-step step-1 flex items-center gap-3 mb-6">
-                            <i class="fas fa-search text-brand-blue text-2xl animate-bounce"></i>
-                            <span class="text-lg">Open Google and search <span class="font-semibold">goodcareinternational.info</span></span>
-                        </div>
-                        <div class="visit-step step-2 flex items-center gap-3 mb-6">
-                            <i class="fas fa-mouse-pointer text-brand-orange text-2xl animate-pulse"></i>
-                            <span class="text-lg">Click the top result: <span class="font-semibold text-brand-blue">Good Care International</span></span>
-                        </div>
-                        <div class="visit-step step-3 flex items-center gap-3 mb-6">
-                            <i class="fas fa-globe text-green-600 text-2xl animate-spin-slow"></i>
-                            <span class="text-lg">Website loads: <span class="font-semibold">goodcareinternational.info</span></span>
-                        </div>
-                        <div class="visit-step step-4 flex items-center gap-3 mb-6">
-                            <span class="text-lg font-semibold text-brand-blue">Explore our services:</span>
-                            <span class="inline-flex space-x-4 ml-2">
-                                <i class="fas fa-plane text-xl text-blue-400 animate-plane-move"></i>
-                                <i class="fas fa-car text-xl text-gray-600 animate-car-move"></i>
-                                <i class="fas fa-ship text-xl text-blue-700 animate-boat-move"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div id="visit-cta-wrap" class="text-center mt-8">
-                        <a href="https://goodcareinternational.info" target="_blank" rel="noopener noreferrer" class="inline-block bg-brand-blue text-white rounded-full px-8 py-3 font-bold text-lg shadow hover:bg-blue-700 transition">Visit Our Website</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <script>
         // Initialize AOS
@@ -1777,9 +1729,5 @@
             });
         })();
     </script>
-    <nav> herf addEventListener
-    set animate-plane-move animate-plane-move
-    plane animate-boat-move
-    </nav>
-</body>
+</body> 
 </html>
