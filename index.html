@@ -13,6 +13,9 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
+        :root {
+            --navbar-height: 80px;
+        }
         /* SVG animated border for hero section */
         .hero-section.svg-animated-border {
             position: relative;
@@ -57,22 +60,21 @@
             left: 0;
             right: 0;
             z-index: 9999;
-            height: 80px; /* Fixed navbar height */
         }
         
-        /* HERO SECTION FIXES - COMPLETE REWORK */
+        /* HERO SECTION FIXES - UPDATED FOR PROPER CENTERING */
         .hero-section {
-            width: 100%;
-            margin-top: 0 !important;
+            width: 100vw;
+            margin-top: var(--navbar-height) !important;
             padding-top: 0 !important;
             position: relative;
-            /* Using dvh (dynamic viewport height) for mobile compatibility */
-            min-height: 100vh;
-            min-height: 100dvh;
-            min-height: -webkit-fill-available;
+            min-height: calc(100dvh - var(--navbar-height));
+            min-height: calc(100vh - var(--navbar-height));
+            min-height: calc(-webkit-fill-available - var(--navbar-height));
             overflow: hidden;
-            /* Desktop starts below navbar */
-            padding-top: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         /* Ensure hero content is properly positioned */
@@ -93,16 +95,21 @@
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-color: #222; /* fallback color for slow image loads */
+            opacity: 0;
+            transition: opacity 1s cubic-bezier(.4,1,.6,1);
+        }
+        .hero-slide.active {
+            opacity: 1;
         }
         
         /* Improved overlay for better text contrast */
         .hero-overlay {
             background: linear-gradient(to bottom, 
-                rgba(0, 0, 0, 0.85) 0%,
-                rgba(0, 0, 0, 0.65) 50%,
-                rgba(0, 0, 0, 0.45) 100%);
+                rgba(0, 0, 0, 0.72) 0%,
+                rgba(0, 0, 0, 0.56) 40%,
+                rgba(0, 0, 0, 0.38) 100%);
             position: absolute;
             top: 0;
             left: 0;
@@ -111,38 +118,59 @@
             z-index: 1;
         }
         
-        /* Hero text container - FIXED POSITIONING */
+        /* Hero text container - FIXED CENTERING */
         .hero-content-container {
             position: relative;
-            z-index: 2;
+            z-index: 30;
+            width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        /* Hero caption wrapper - CENTERED */
+        .hero-caption-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 2rem 1rem;
-            /* Ensure content is properly centered and doesn't touch edges */
-            max-width: 100%;
-            margin: 0 auto;
+            padding: 2rem;
         }
         
         /* Improved text visibility */
         .hero-caption-title {
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
             font-weight: 700;
             line-height: 1.2;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             color: white;
+            width: 100%;
         }
         
         .hero-caption-sub {
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
             color: rgba(255, 255, 255, 0.95);
             font-weight: 400;
             line-height: 1.5;
-            max-width: 800px;
-            margin: 0 auto 2rem auto;
+            max-width: 700px;
+            margin: 0 auto 2.25rem auto;
+            width: 100%;
+        }
+        
+        /* Hero buttons container - CENTERED */
+        .hero-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            width: 100%;
         }
         
         /* Hero buttons with better contrast */
@@ -152,16 +180,20 @@
             font-weight: 600;
             padding: 0.875rem 2rem;
             border-radius: 9999px;
-            box-shadow: 0 4px 20px rgba(255, 127, 39, 0.4);
+            box-shadow: 0 4px 20px rgba(255, 127, 39, 0.3);
             transition: all 0.3s ease;
             border: none;
-            display: inline-block;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
         }
         
         .hero-button-primary:hover {
             background: linear-gradient(135deg, #FF5E1F 0%, #FF4500 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 127, 39, 0.6);
+            box-shadow: 0 6px 25px rgba(255, 127, 39, 0.4);
         }
         
         .hero-button-secondary {
@@ -172,7 +204,11 @@
             border-radius: 9999px;
             border: 2px solid white;
             transition: all 0.3s ease;
-            display: inline-block;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
         }
         
         .hero-button-secondary:hover {
@@ -181,104 +217,105 @@
             transform: translateY(-2px);
         }
         
+        /* Features container - CENTERED */
+        .hero-features-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+        
         /* Mobile specific fixes */
         @media (max-width: 768px) {
-            /* Apply dynamic viewport units to body */
             body {
                 height: 100dvh;
                 height: -webkit-fill-available;
             }
-            
-            /* Adjust hero for mobile */
             .hero-section {
-                min-height: calc(100dvh - 80px);
-                padding-top: 0 !important;
-                margin-top: 80px !important; /* Push below fixed navbar */
+                min-height: calc(100dvh - var(--navbar-height));
+                margin-top: var(--navbar-height) !important;
             }
-            
-            /* Adjust hero background for mobile */
             .hero-slide {
                 background-attachment: scroll !important;
-                background-position: center center !important;
+                background-position: center top !important;
             }
-            
-            /* Mobile text adjustments */
             .hero-caption-title {
                 font-size: 2.5rem;
                 margin-bottom: 1rem;
+                padding: 0 1rem;
             }
-            
             .hero-caption-sub {
                 font-size: 1.125rem;
                 margin-bottom: 2rem;
                 padding: 0 1rem;
             }
-            
-            /* Mobile button adjustments */
+            .hero-buttons-container {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
             .hero-button-primary,
             .hero-button-secondary {
                 padding: 0.75rem 1.5rem;
                 font-size: 1rem;
-                width: 90%;
+                width: 100%;
                 max-width: 280px;
-                margin: 0.5rem auto;
-                display: block;
             }
-            
-            /* Center content on mobile */
-            .hero-content-container {
+            .hero-caption-wrapper {
                 padding: 1.5rem 1rem;
-                justify-content: center;
             }
-            
-            /* Improve overlay for mobile */
-            .hero-overlay {
-                background: linear-gradient(to bottom, 
-                    rgba(0, 0, 0, 0.9) 0%,
-                    rgba(0, 0, 0, 0.7) 50%,
-                    rgba(0, 0, 0, 0.5) 100%);
+            .hero-features-container {
+                gap: 1rem;
+            }
+            .hero-feature {
+                font-size: 0.85rem;
             }
         }
         
         /* Desktop adjustments */
         @media (min-width: 769px) {
-            .hero-section {
-                padding-top: 80px; /* Navbar height */
-                margin-top: 0 !important;
+            .hero-caption-wrapper {
+                padding: 2.5rem 1.25rem;
             }
-            
+            .hero-section {
+                min-height: calc(100vh - var(--navbar-height));
+                margin-top: var(--navbar-height) !important;
+            }
             .hero-caption-title {
                 font-size: 3.5rem;
             }
-            
             .hero-caption-sub {
                 font-size: 1.5rem;
             }
-            
             .hero-button-primary,
             .hero-button-secondary {
-                display: inline-block;
-                margin: 0 0.5rem;
-                width: auto;
+                margin: 0;
             }
-            
-            .hero-content-container {
-                padding: 3rem 2rem;
+            .hero-buttons-container {
+                gap: 1.5rem;
             }
         }
         
         /* Large desktop adjustments */
         @media (min-width: 1024px) {
+            .hero-section {
+                min-height: calc(100vh - var(--navbar-height));
+                margin-top: var(--navbar-height) !important;
+            }
             .hero-caption-title {
                 font-size: 4rem;
             }
-            
             .hero-caption-sub {
                 font-size: 1.75rem;
-            }
-            
-            .hero-content-container {
-                padding: 4rem 2rem;
             }
         }
         
@@ -483,9 +520,18 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
         
         /* Additional mobile fixes */
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
+            /* Ensure hero fills space below taller mobile navbar */
+            .hero-section {
+                min-height: calc(100dvh - 80px) !important;
+                margin-top: 80px !important;
+            }
+            
             /* Remove any top margin/padding on hero and first section */
             .hero-section,
             section:first-of-type {
@@ -496,11 +542,6 @@
             /* Adjust body padding for mobile */
             body {
                 padding-top: 0;
-            }
-            
-            /* Ensure hero dots are visible */
-            .hero-dots {
-                bottom: 30px !important;
             }
         }
         
@@ -532,25 +573,6 @@
                 width: auto;
                 min-width: 200px;
             }
-        }
-        
-        /* Ensure hero dots are above content */
-        .hero-dots {
-            z-index: 20;
-        }
-        
-        /* Scroll indicator positioning */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-        }
-        
-        /* Prevent content shift when navbar becomes fixed */
-        body {
-            padding-top: 0;
         }
     </style>
     <script>
@@ -617,7 +639,7 @@
         </div>
     </div>
 
-    <!-- Hero (background slideshow) - FIXED FOR ALL SCREENS -->
+    <!-- Hero (background slideshow) - FIXED for all screen sizes -->
     <section class="hero-section svg-animated-border relative text-white overflow-hidden">
         <svg class="svg-border" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;z-index:10;pointer-events:none;">
             <defs>
@@ -632,18 +654,20 @@
         </svg>
         <div class="absolute inset-0">
             <div class="hero-slides" aria-hidden="true">
-                <div class="hero-slide" style="background-image: url('assets/background 1.jpeg');" data-title="Fly Beyond Borders" data-sub="Exclusive international packages crafted for your comfort."></div>
-                <div class="hero-slide" style="background-image: url('assets/background 2.jpeg');" data-title="Discover Hidden Gems" data-sub="Tailored domestic getaways for every mood and budget."></div>
-                <div class="hero-slide" style="background-image: url('assets/background 3.jpg');" data-title="Adventure Awaits" data-sub="Curated experiences and guided tours around the world."></div>
+                <div class="hero-slide active" style="background-image: url('assets/background 3.jpg');" data-title="Welcome to Good Care International" data-sub="Your journey begins here. Explore the world with comfort, safety, and unforgettable experiences."></div>
+                <div class="hero-slide" style="background-image: url('assets/background 2.jpeg');" data-title="Discover Amazing Destinations" data-sub="From pristine beaches to majestic mountains, find your perfect getaway with us."></div>
+                <div class="hero-slide" style="background-image: url('assets/background 1.jpeg');" data-title="Premium Travel Experiences" data-sub="Luxury meets adventure with our curated travel packages and exceptional service."></div>
             </div>
             <div class="hero-overlay"></div>
         </div>
 
+        <!-- FIXED HERO CONTENT - PROPERLY CENTERED -->
         <div class="hero-content-container" data-aos="fade-up">
-            <div class="hero-caption">
-                <h1 class="hero-caption-title text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6">Fly Beyond Borders</h1>
-                <p class="hero-caption-sub text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 max-w-3xl mx-auto px-4">Exclusive international packages crafted for your comfort and unforgettable experiences.</p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mb-10">
+            <div class="hero-caption-wrapper">
+                <h1 class="hero-caption-title">Welcome to Good Care International</h1>
+                <p class="hero-caption-sub">Your journey begins here. Explore the world with comfort, safety, and unforgettable experiences.</p>
+                
+                <div class="hero-buttons-container">
                     <a href="#contact" class="hero-button-primary">
                         <i class="fas fa-calendar-alt mr-2"></i> Plan My Trip
                     </a>
@@ -651,28 +675,36 @@
                         <i class="fas fa-map-marked-alt mr-2"></i> Explore Destinations
                     </a>
                 </div>
-                <div class="text-sm md:text-base text-white/90">
-                    <i class="fas fa-shield-alt mr-2"></i> Safe & Secure Bookings • 
-                    <i class="fas fa-headset ml-4 mr-2"></i> 24/7 Support • 
-                    <i class="fas fa-award ml-4 mr-2"></i> Best Price Guarantee
+                
+                <div class="hero-features-container">
+                    <span class="hero-feature">
+                        <i class="fas fa-shield-alt"></i> Safe & Secure Bookings
+                    </span>
+                    <span class="hero-feature">
+                        <i class="fas fa-headset"></i> 24/7 Support
+                    </span>
+                    <span class="hero-feature">
+                        <i class="fas fa-award"></i> Best Price Guarantee
+                    </span>
                 </div>
             </div>
         </div>
 
         <div class="absolute bottom-6 left-0 right-0 flex items-center justify-center gap-3 z-20 hero-dots" aria-hidden="true">
-            <button class="active" aria-label="Slide 1"></button>
-            <button aria-label="Slide 2"></button>
-            <button aria-label="Slide 3"></button>
+            <button class="hero-dot active" aria-label="Slide 1" type="button"></button>
+            <button class="hero-dot" aria-label="Slide 2" type="button"></button>
+            <button class="hero-dot" aria-label="Slide 3" type="button"></button>
         </div>
         
         <!-- Scroll indicator -->
-        <div class="scroll-indicator hidden md:block">
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 hidden md:block">
             <div class="animate-bounce">
                 <i class="fas fa-chevron-down text-white text-2xl"></i>
             </div>
         </div>
     </section>
 
+    <!-- Rest of the HTML remains exactly the same -->
     <!-- Gallery Section -->
     <section id="about" class="py-20 bg-white">
         <div class="container mx-auto px-4">
@@ -1726,21 +1758,29 @@
             const dots = Array.from(document.querySelectorAll('.hero-dots button'));
             const captionTitle = document.querySelector('.hero-caption-title');
             const captionSub = document.querySelector('.hero-caption-sub');
-            const captionWrap = document.querySelector('.hero-caption');
+            const captionWrap = document.querySelector('.hero-caption-wrapper');
             if (!slides.length || !captionTitle) return;
             let current = 0;
             let interval = null;
 
             function updateCaption(idx) {
                 const s = slides[idx];
-                const title = s.dataset.title || '';
-                const sub = s.dataset.sub || '';
-                captionWrap.classList.add('anim-out');
+                const title = s.dataset.title || 'Welcome to Good Care International';
+                const sub = s.dataset.sub || 'Your journey begins here. Explore the world with comfort, safety, and unforgettable experiences.';
+                
+                // Fade out
+                captionWrap.style.opacity = '0';
+                captionWrap.style.transform = 'translateY(10px)';
+                
                 setTimeout(() => {
                     captionTitle.textContent = title;
                     captionSub.textContent = sub;
-                    captionWrap.classList.remove('anim-out');
-                }, 160);
+                    
+                    // Fade in
+                    captionWrap.style.opacity = '1';
+                    captionWrap.style.transform = 'translateY(0)';
+                    captionWrap.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                }, 300);
             }
 
             function show(idx) {
