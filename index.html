@@ -66,13 +66,10 @@
             margin-top: 0 !important;
             padding-top: 0 !important;
             position: relative;
-            /* Using dvh (dynamic viewport height) for mobile compatibility */
             min-height: 100vh;
             min-height: 100dvh;
-            min-height: -webkit-fill-available;
             overflow: hidden;
-            /* Desktop starts below navbar */
-            padding-top: 80px;
+            padding-top: 80px; /* Default for desktop, pushed down by navbar */
         }
         
         /* Ensure hero content is properly positioned */
@@ -95,6 +92,16 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-color: #222; /* fallback color for slow image loads */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out, visibility 1.2s;
+            transform: scale(1.05); /* Initial slightly zoomed state */
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1); /* Zoom out to normal */
         }
         
         /* Improved overlay for better text contrast */
@@ -111,20 +118,21 @@
             z-index: 1;
         }
         
-        /* Hero text container - FIXED POSITIONING */
+        /* Hero text container */
         .hero-content-container {
             position: relative;
             z-index: 2;
-            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem 1rem;
-            /* Ensure content is properly centered and doesn't touch edges */
+            padding: 4rem 1rem 2rem 1rem; /* Added more top padding */
             max-width: 100%;
             margin: 0 auto;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            min-height: calc(100vh - 80px); /* Ensure it takes up enough space */
+            min-height: calc(100dvh - 80px);
         }
         
         /* Improved text visibility */
@@ -191,7 +199,7 @@
             
             /* Adjust hero for mobile */
             .hero-section {
-                min-height: calc(100dvh - 80px);
+                min-height: calc(100dvh - 80px); /* Account for fixed navbar */
                 padding-top: 0 !important;
                 margin-top: 80px !important; /* Push below fixed navbar */
             }
@@ -204,14 +212,16 @@
             
             /* Mobile text adjustments */
             .hero-caption-title {
-                font-size: 2.5rem;
-                margin-bottom: 1rem;
+                font-size: 2.25rem; /* Slightly smaller for better fit */
+                margin-bottom: 0.75rem;
+                line-height: 1.2;
             }
             
             .hero-caption-sub {
-                font-size: 1.125rem;
-                margin-bottom: 2rem;
-                padding: 0 1rem;
+                font-size: 1rem; /* Smaller for mobile */
+                margin-bottom: 1.5rem;
+                padding: 0 0.5rem;
+                line-height: 1.4;
             }
             
             /* Mobile button adjustments */
@@ -227,8 +237,9 @@
             
             /* Center content on mobile */
             .hero-content-container {
-                padding: 1.5rem 1rem;
+                padding: 4rem 1rem 2rem 1rem; /* Adjusted for mobile */
                 justify-content: center;
+                min-height: calc(100dvh - 80px); /* Account for fixed navbar */
             }
             
             /* Improve overlay for mobile */
@@ -249,10 +260,12 @@
             
             .hero-caption-title {
                 font-size: 3.5rem;
+                text-wrap: balance;
             }
             
             .hero-caption-sub {
                 font-size: 1.5rem;
+                text-wrap: balance;
             }
             
             .hero-button-primary,
@@ -271,10 +284,12 @@
         @media (min-width: 1024px) {
             .hero-caption-title {
                 font-size: 4rem;
+                text-wrap: balance;
             }
             
             .hero-caption-sub {
                 font-size: 1.75rem;
+                text-wrap: balance;
             }
             
             .hero-content-container {
@@ -632,17 +647,17 @@
         </svg>
         <div class="absolute inset-0">
             <div class="hero-slides" aria-hidden="true">
-                <div class="hero-slide" style="background-image: url('assets/background 1.jpeg');" data-title="Fly Beyond Borders" data-sub="Exclusive international packages crafted for your comfort."></div>
+                <div class="hero-slide" style="background-image: url('assets/background\ 3.jpg');" data-title="Fly Beyond Borders" data-sub="Exclusive international packages crafted for your comfort."></div>
                 <div class="hero-slide" style="background-image: url('assets/background 2.jpeg');" data-title="Discover Hidden Gems" data-sub="Tailored domestic getaways for every mood and budget."></div>
-                <div class="hero-slide" style="background-image: url('assets/background 3.jpg');" data-title="Adventure Awaits" data-sub="Curated experiences and guided tours around the world."></div>
+                <div class="hero-slide" style="background-image: url('assets/background 1.jpeg');" data-title="Adventure Awaits" data-sub="Curated experiences and guided tours around the world."></div>
             </div>
             <div class="hero-overlay"></div>
         </div>
 
         <div class="hero-content-container" data-aos="fade-up">
             <div class="hero-caption">
-                <h1 class="hero-caption-title text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6">Fly Beyond Borders</h1>
-                <p class="hero-caption-sub text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 max-w-3xl mx-auto px-4">Exclusive international packages crafted for your comfort and unforgettable experiences.</p>
+                <h1 class="hero-caption-title text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-balance">Explore the World with Good Care</h1>
+                <p class="hero-caption-sub text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 max-w-3xl mx-auto px-4 text-balance">Your journey, reimagined. Unforgettable experiences tailored just for you.</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mb-10">
                     <a href="#contact" class="hero-button-primary">
                         <i class="fas fa-calendar-alt mr-2"></i> Plan My Trip
@@ -652,9 +667,9 @@
                     </a>
                 </div>
                 <div class="text-sm md:text-base text-white/90">
-                    <i class="fas fa-shield-alt mr-2"></i> Safe & Secure Bookings • 
+                    <i class="fas fa-shield-alt mr-2"></i> Safe & Secure • 
                     <i class="fas fa-headset ml-4 mr-2"></i> 24/7 Support • 
-                    <i class="fas fa-award ml-4 mr-2"></i> Best Price Guarantee
+                    <i class="fas fa-award ml-4 mr-2"></i> Best Price
                 </div>
             </div>
         </div>
@@ -1575,7 +1590,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 <div>
                     <a href="#" class="flex items-center gap-3 mb-6">
-                        <img src="assets/goodcare-logo.jpg" alt="Good Care International Logo" class="h-14 md:h-16 object-contain">
+                        <img src="assets/goodcare-logo.png" alt="Good Care International Logo" class="h-14 md:h-16 object-contain">
                     </a>
                     <p class="text-gray-400 text-sm leading-relaxed mb-6">
                         Good Care International Tours & Travels is your gateway to the world. We are committed to providing exceptional travel experiences with a personal touch.
@@ -1605,6 +1620,7 @@
                         <li><a href="#packages" class="hover:text-brand-orange transition">Packages</a></li>
                         <li><a href="#blog" class="hover:text-brand-orange transition">Blog</a></li>
                         <li><a href="#contact" class="hover:text-brand-orange transition">Contact Us</a></li>
+                        <li><a href="#services" class="hover:text-brand-orange transition">Services</a></li>
                     </ul>
                 </div>
 
@@ -1744,7 +1760,12 @@
             }
 
             function show(idx) {
-                slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+                slides.forEach((s, i) => {
+                    s.classList.remove('active');
+                    if (i === idx) {
+                        s.classList.add('active');
+                    }
+                });
                 dots.forEach((d, i) => d.classList.toggle('active', i === idx));
                 current = idx;
                 updateCaption(idx);
