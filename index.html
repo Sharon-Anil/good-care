@@ -392,7 +392,6 @@
         .whatsapp-float {
             position: fixed;
             left: 18px;
-            top: calc(50% - 10px);
             bottom: auto;
             transform: translateY(-50%);
             background: linear-gradient(180deg,#25D366,#128C7E);
@@ -412,7 +411,7 @@
         .whatsapp-float:hover { transform: translateY(-50%) scale(1.04); box-shadow: 0 14px 36px rgba(0,0,0,0.24); }
         .whatsapp-float .wa-text, .whatsapp-float .wa-label { display: none !important; }
         .whatsapp-float .wa-icon { font-size: 1.9rem; display: inline-block; }
-        @media (max-width: 640px) { .whatsapp-float { min-width: 56px; height: 56px; padding: 0.65rem; } }
+        @media (max-width: 640px) { .whatsapp-float { min-width: 56px; height: 56px; padding: 0.65rem; left: 18px; right: auto; } }
         @media (max-height: 720px) {
             .whatsapp-float { top: auto; bottom: 18px; transform: none; }
             .whatsapp-float:hover { transform: translateY(0) scale(1.04); }
@@ -1934,5 +1933,3 @@
     </script>
 </body> 
 </html>
-
-
